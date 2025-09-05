@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { IncomeExpenseChart } from "@/components/charts/income-expense-chart";
 import { ExpensePieChart } from "../components/charts/expense-pie-chart";
 import { useTransactions, useSavingsAccounts, useSubscriptions } from "@/hooks/use-financial-data";
+import { useCurrency } from "@/hooks/use-currency";
 import { 
   Wallet, 
   TrendingUp, 
@@ -20,6 +21,7 @@ export default function Dashboard() {
   const { data: transactions = [], isLoading: transactionsLoading } = useTransactions();
   const { data: savings = [], isLoading: savingsLoading } = useSavingsAccounts();
   const { data: subscriptions = [], isLoading: subscriptionsLoading } = useSubscriptions();
+  const { formatAmount } = useCurrency();
 
   const metrics = useMemo(() => {
     const currentMonth = new Date().getMonth();
@@ -87,28 +89,28 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <MetricCard
           title="Total Balance"
-          value={`$${metrics.totalBalance.toFixed(2)}`}
+          value={formatAmount(metrics.totalBalance)}
           icon={Wallet}
           iconColor="text-secondary"
           description={transactions.length > 0 ? "Current month" : "No transactions yet"}
         />
         <MetricCard
           title="Monthly Income"
-          value={`$${metrics.monthlyIncome.toFixed(2)}`}
+          value={formatAmount(metrics.monthlyIncome)}
           icon={TrendingUp}
           iconColor="text-secondary"
           description={metrics.monthlyIncome > 0 ? "This month" : "Add your first income"}
         />
         <MetricCard
           title="Monthly Expenses"
-          value={`$${metrics.monthlyExpenses.toFixed(2)}`}
+          value={formatAmount(metrics.monthlyExpenses)}
           icon={TrendingDown}
           iconColor="text-destructive"
           description={metrics.monthlyExpenses > 0 ? "This month" : "Track your spending"}
         />
         <MetricCard
           title="Total Savings"
-          value={`$${metrics.totalSavings.toFixed(2)}`}
+          value={formatAmount(metrics.totalSavings)}
           icon={PiggyBank}
           iconColor="text-accent"
           description={savings.length > 0 ? `${savings.length} accounts` : "Start saving today"}

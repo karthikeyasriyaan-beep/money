@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { CurrencySelector } from "@/components/ui/currency-selector";
 import { useCreateSubscription, useUpdateSubscription } from "@/hooks/use-financial-data";
 import { useToast } from "@/hooks/use-toast";
+import { useCurrency } from "@/hooks/use-currency";
 import type { Subscription } from "@shared/schema";
 import { X } from "lucide-react";
 
@@ -14,9 +16,11 @@ interface SubscriptionFormProps {
 }
 
 export function SubscriptionForm({ subscription, onClose }: SubscriptionFormProps) {
+  const { currency, setCurrency, getSymbol } = useCurrency();
   const [formData, setFormData] = useState({
     name: subscription?.name || "",
     cost: subscription?.cost || "",
+    currency: currency,
     nextPaymentDate: subscription?.nextPaymentDate 
       ? new Date(subscription.nextPaymentDate).toISOString().split('T')[0]
       : "",
@@ -99,16 +103,27 @@ export function SubscriptionForm({ subscription, onClose }: SubscriptionFormProp
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="cost">Monthly Cost</Label>
-            <Input
-              id="cost"
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={formData.cost}
-              onChange={(e) => setFormData({ ...formData, cost: e.target.value })}
-              data-testid="input-monthly-cost"
+          <div className="grid grid-cols-3 gap-3">
+            <div className="col-span-2 space-y-2">
+              <Label htmlFor="cost">Monthly Cost</Label>
+              <Input
+                id="cost"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                value={formData.cost}
+                onChange={(e) => setFormData({ ...formData, cost: e.target.value })}
+                data-testid="input-monthly-cost"
+              />
+            </div>
+            <CurrencySelector
+              value={formData.currency}
+              onChange={(value) => {
+                setFormData({ ...formData, currency: value });
+                setCurrency(value);
+              }}
+              className="space-y-2"
+              label="Currency"
             />
           </div>
 

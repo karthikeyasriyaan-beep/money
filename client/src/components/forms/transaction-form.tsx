@@ -4,8 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CurrencySelector } from "@/components/ui/currency-selector";
 import { useCreateTransaction, useUpdateTransaction } from "@/hooks/use-financial-data";
 import { useToast } from "@/hooks/use-toast";
+import { useCurrency } from "@/hooks/use-currency";
 import type { Transaction } from "@shared/schema";
 import { X } from "lucide-react";
 
@@ -38,9 +40,11 @@ const expenseCategories = [
 ];
 
 export function TransactionForm({ type, transaction, onClose }: TransactionFormProps) {
+  const { currency, setCurrency, getSymbol } = useCurrency();
   const [formData, setFormData] = useState({
     description: transaction?.description || "",
     amount: transaction?.amount || "",
+    currency: currency,
     category: transaction?.category || "",
     date: transaction?.date 
       ? new Date(transaction.date).toISOString().split('T')[0]
@@ -126,16 +130,27 @@ export function TransactionForm({ type, transaction, onClose }: TransactionFormP
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="amount">Amount</Label>
-            <Input
-              id="amount"
-              type="number"
-              step="0.01"
-              placeholder="0.00"
-              value={formData.amount}
-              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-              data-testid="input-amount"
+          <div className="grid grid-cols-3 gap-3">
+            <div className="col-span-2 space-y-2">
+              <Label htmlFor="amount">Amount</Label>
+              <Input
+                id="amount"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                value={formData.amount}
+                onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+                data-testid="input-amount"
+              />
+            </div>
+            <CurrencySelector
+              value={formData.currency}
+              onChange={(value) => {
+                setFormData({ ...formData, currency: value });
+                setCurrency(value);
+              }}
+              className="space-y-2"
+              label="Currency"
             />
           </div>
 
