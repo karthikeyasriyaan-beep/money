@@ -78,7 +78,7 @@ export function GoalForm({ goal, onClose }: GoalFormProps) {
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="glass-card border-border animate-slide-up">
+      <DialogContent className="dialog-card border-border">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle>
