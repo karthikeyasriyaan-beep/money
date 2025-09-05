@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import { MonthlyTrendChart } from "@/components/charts/monthly-trend-chart";
-import { ExpensePieChart } from "@/components/charts/expense-pie-chart";
+import { MonthlyTrendChart } from "../components/charts/monthly-trend-chart";
+import { ExpensePieChart } from "../components/charts/expense-pie-chart";
 import { useTransactions, useFinancialGoals } from "@/hooks/use-financial-data";
 import { 
   TrendingUp, 

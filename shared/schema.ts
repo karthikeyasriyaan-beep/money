@@ -41,23 +41,37 @@ export const financialGoals = pgTable("financial_goals", {
   createdAt: timestamp("created_at").default(sql`now()`).notNull(),
 });
 
-// Insert schemas
-export const insertSubscriptionSchema = createInsertSchema(subscriptions).omit({
+// Insert schemas with string coercion for form inputs
+export const insertSubscriptionSchema = createInsertSchema(subscriptions, {
+  cost: z.string().min(1, "Cost is required").transform(val => val),
+  nextPaymentDate: z.date().or(z.string().transform(str => new Date(str))),
+}).omit({
   id: true,
   createdAt: true,
 });
 
-export const insertTransactionSchema = createInsertSchema(transactions).omit({
+export const insertTransactionSchema = createInsertSchema(transactions, {
+  amount: z.string().min(1, "Amount is required").transform(val => val),
+  date: z.date().or(z.string().transform(str => new Date(str))),
+}).omit({
   id: true,
   createdAt: true,
 });
 
-export const insertSavingsAccountSchema = createInsertSchema(savingsAccounts).omit({
+export const insertSavingsAccountSchema = createInsertSchema(savingsAccounts, {
+  balance: z.string().optional().transform(val => val || "0"),
+  targetAmount: z.string().optional().nullable().transform(val => val || null),
+  interestRate: z.string().optional().transform(val => val || "0"),
+}).omit({
   id: true,
   createdAt: true,
 });
 
-export const insertFinancialGoalSchema = createInsertSchema(financialGoals).omit({
+export const insertFinancialGoalSchema = createInsertSchema(financialGoals, {
+  targetAmount: z.string().min(1, "Target amount is required").transform(val => val),
+  currentAmount: z.string().optional().transform(val => val || "0"),
+  targetDate: z.date().optional().nullable().or(z.string().optional().nullable().transform(str => str ? new Date(str) : null)),
+}).omit({
   id: true,
   createdAt: true,
 });

@@ -3,7 +3,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { IncomeExpenseChart } from "@/components/charts/income-expense-chart";
-import { ExpensePieChart } from "@/components/charts/expense-pie-chart";
+import { ExpensePieChart } from "../components/charts/expense-pie-chart";
 import { useTransactions, useSavingsAccounts, useSubscriptions } from "@/hooks/use-financial-data";
 import { 
   Wallet, 
@@ -72,8 +72,8 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="text-3xl font-bold text-foreground">Financial Dashboard</h2>
-          <p className="text-muted-foreground mt-2">Welcome back! Here's your financial overview.</p>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent animate-slide-up">Welcome to Lumeo</h2>
+          <p className="text-muted-foreground mt-2 animate-fade-in">Your intelligent financial command center.</p>
         </div>
         <Link href="/money">
           <Button className="btn-ripple bg-primary text-primary-foreground" data-testid="quick-add-btn">

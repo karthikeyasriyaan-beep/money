@@ -50,7 +50,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 <div className="bg-primary rounded-lg p-2">
                   <ChartLine className="text-primary-foreground h-6 w-6" />
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">FinanceFlow</h1>
+                <h1 className="text-2xl font-bold text-foreground bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Lumeo</h1>
               </div>
               <button 
                 onClick={onClose}
@@ -70,9 +70,9 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               
               return (
                 <Link key={item.name} href={item.href}>
-                  <a 
+                  <div 
                     className={cn(
-                      "navigation-item flex items-center space-x-3 p-3 rounded-lg transition-colors",
+                      "navigation-item flex items-center space-x-3 p-3 rounded-lg transition-colors cursor-pointer",
                       isActive 
                         ? "bg-primary/10 text-primary" 
                         : "text-muted-foreground hover:text-foreground hover:bg-accent/10"
@@ -82,7 +82,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   >
                     <Icon className="h-5 w-5" />
                     <span>{item.name}</span>
-                  </a>
+                  </div>
                 </Link>
               );
             })}
